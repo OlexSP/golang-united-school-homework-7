@@ -161,3 +161,31 @@ func TestMatrix_Cols(t *testing.T) {
 		t.Errorf("Expected %v, got %v", tData.Expected, got)
 	}
 }
+
+func TestMatrix_Set(t *testing.T) {
+	baseMatrix := &Matrix{2, 3, []int{1, 1, 1, 2, 2, 2}}
+	needMatrixT := &Matrix{2, 3, []int{1, 1, 1, 2, 5, 2}}
+	needMatrixF := &Matrix{2, 3, []int{1, 1, 1, 2, 2, 2}}
+
+	tData := map[string]struct {
+		row            int
+		col            int
+		value          int
+		ExpectedMatrix *Matrix
+		Expected       bool
+	}{
+		"ProperData":     {1, 1, 5, needMatrixT, true},
+		"RowLessO":       {-1, 1, 5, baseMatrix, false},
+		"ImproperRowNum": {2, 1, 5, needMatrixF, false},
+		"ImproperColNum": {1, 3, 5, needMatrixF, false},
+	}
+
+	for name, v := range tData {
+		t.Run(name, func(t *testing.T) {
+			got := baseMatrix.Set(v.row, v.col, v.value)
+			if got != v.Expected && !reflect.DeepEqual(v.ExpectedMatrix, baseMatrix) {
+				t.Errorf("[%s] expected: %v, got %v", name, v.Expected, got)
+			}
+		})
+	}
+}
