@@ -78,6 +78,18 @@ func TestPeople_Less(t *testing.T) {
 }
 
 func TestPeople_Swap(t *testing.T) {
+	var PList People = []Person{
+		{
+			firstName: "Ivan",
+			lastName:  "Drago",
+			birthDay:  time.Date(1985, time.May, 25, 0, 0, 0, 0, time.UTC),
+		},
+		{
+			firstName: "Olexa",
+			lastName:  "Кvitka",
+			birthDay:  time.Date(1995, time.December, 05, 0, 0, 0, 0, time.UTC),
+		},
+	}
 	tData := struct {
 		FirstPeopleInd  int
 		SecondPeopleInd int
@@ -85,10 +97,14 @@ func TestPeople_Swap(t *testing.T) {
 	}{
 		0,
 		1,
-		PersonList[0],
+		Person{
+			firstName: "Ivan",
+			lastName:  "Drago",
+			birthDay:  time.Date(1985, time.May, 25, 0, 0, 0, 0, time.UTC),
+		},
 	}
-	PersonList.Swap(tData.FirstPeopleInd, tData.SecondPeopleInd)
-	got := PersonList[tData.SecondPeopleInd]
+	PList.Swap(tData.FirstPeopleInd, tData.SecondPeopleInd)
+	got := PList[tData.SecondPeopleInd]
 	if got != tData.Expected {
 		t.Errorf("Expected %v, got %v", tData.Expected, got)
 	}
@@ -175,7 +191,7 @@ func TestMatrix_Set(t *testing.T) {
 		Expected       bool
 	}{
 		"ProperData":     {1, 1, 5, needMatrixT, true},
-		"RowLessO":       {-1, 1, 5, baseMatrix, false},
+		"RowLessO":       {-1, 1, 5, needMatrixF, false},
 		"ImproperRowNum": {2, 1, 5, needMatrixF, false},
 		"ImproperColNum": {1, 3, 5, needMatrixF, false},
 	}
